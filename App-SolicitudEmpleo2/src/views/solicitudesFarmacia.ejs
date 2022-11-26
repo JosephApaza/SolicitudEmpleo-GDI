@@ -1,0 +1,49 @@
+<%- include('partials/_header') %>
+    <div class="container-fluid p-4 gap-5">
+        <a href="/solicitudes" class="col-md-1 btn btn-danger bi bi-arrow-return-left" id="volver"> Volver </a>
+        <div class="row p-3 gap-5 w-100 d-flex flex-wrap justify-content-center align-items-center">
+            <h1 class="col-md-12 mb-0 text-center">Postulantes: Farmacia</h1>
+            <div>
+                <label>Buscar: </label>
+                <input type="search" id="buscador">
+                <script>
+                    document.addEventListener("keyup", e => {
+                        if (e.target.matches('#buscador')) {
+                            if (e.key === "Escape") e.target.value = '';
+                            document.querySelectorAll('.registro').forEach(post => {
+                                post.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+                                    ? post.classList.remove("d-none")
+                                    : post.classList.add("d-none");
+                            });
+                        }
+                    });
+                </script>
+            </div>
+            <table class="table table-striped RegPost text-center" id="tbPostFarm">
+                <tr>
+                    <th>DNI</th>
+                    <th>POSTULANTE</th>
+                    <th class="d-none">ÁREA</th>
+                    <th>CELULAR</th>
+                </tr>
+                <% for(var i=0; i<postFarmacia[0].length; i++) { %>
+                    <tr class="registro">
+                        <td>
+                            <%= postFarmacia[0][i].DNI %>
+                        </td>
+                        <td>
+                            <%= postFarmacia[0][i].Postulante %>
+                        </td>
+                        <td>
+                            <%= postFarmacia[0][i].Celular %>
+                        </td>
+                        <td class="d-none">
+                            <%= postFarmacia[0][i].Area %>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+        </div>
+    </div>
+
+    <%- include('partials/_footer') %>

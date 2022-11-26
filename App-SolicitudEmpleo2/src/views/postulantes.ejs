@@ -1,0 +1,324 @@
+<%- include('partials/_header') %>
+
+    <div class="container-fluid p-3">
+        <h1>Postulantes</h1>
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-5" id="options">
+            <div>
+                <label>Buscar: </label>
+                <input type="search" id="buscador">
+                <script>
+                    document.addEventListener("keyup", e => {
+                        if (e.target.matches('#buscador')) {
+
+                            if (e.key === "Escape") e.target.value = '';
+
+                            document.querySelectorAll('.registro').forEach(post => {
+                                post.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+                                    ? post.classList.remove("d-none")
+                                    : post.classList.add("d-none");
+                            });
+                        };
+                    });
+                </script>
+            </div>
+            <div>
+                <button class="btn btn-success bi bi-file-earmark-plus-fill align-self-end" onclick="mostrarAñadir()">
+                    Añadir postulante </button>
+                <button class="btn btn-danger bi bi-x-lg d-none" id="ocultar" onclick="Ocultar()"> Ocultar </button>
+            </div>
+            <script>
+                function Ocultar() {
+                    var añadir = document.getElementById('añadir');
+                    añadir.classList.add("d-none");
+                    var tabla = document.getElementById('tabla');
+                    tabla.classList.add("col-md-12");
+                    tabla.classList.remove("col-md-6");
+                    var ocultar = document.getElementById('ocultar');
+                    ocultar.classList.add("d-none");
+                }
+
+                function mostrarAñadir() {
+                    var añadir = document.getElementById('añadir');
+                    añadir.classList.remove("d-none");
+                    var tabla = document.getElementById('tabla');
+                    tabla.classList.remove("col-md-12");
+                    tabla.classList.add("col-md-6");
+                    var ocultar = document.getElementById('ocultar');
+                    ocultar.classList.remove("d-none");
+                    var borrar = document.getElementById('borrar');
+                    borrar.classList.add("d-none");
+                }
+            </script>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mt-4 text-center" id="tabla">
+                <table class="table table-striped RegPost">
+                    <tr>
+                        <th>SOLICITUD</th>
+                        <th>ID</th>
+                        <th>DNI</th>
+                        <th>NOMBRES</th>
+                        <th>CELULAR</th>
+                        <th class="d-none">SEXO</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                    <% for(var i=0; i<postulantes[0].length; i++) { %>
+                        <tr class="registro">
+                            <td>
+                                <%= postulantes[0][i].NumSolicitud %>
+                            </td>
+                            <td>
+                                <%= postulantes[0][i].CodP %>
+                            </td>
+                            <td>
+                                <%= postulantes[0][i].DNI %>
+                            </td>
+                            <td>
+                                <%= postulantes[0][i].Postulante %>
+                            </td>
+                            <td>
+                                <%= postulantes[0][i].Celular %>
+                            </td>
+                            <td class="d-none">
+                                <%= postulantes[0][i].Sexo %>
+                            </td>
+                            <td>
+                                <a href="/postulantes/edit/<%= postulantes[0][i].CodP %>"
+                                    class="btn btn-warning bi bi-pencil-square" onclick="mostrarEditar()"></a>
+                                <a href="/postulantes/delete/<%= postulantes[0][i].CodP %>"
+                                    class="btn btn-danger bi bi-trash3-fill" onclick="mostrarBorrar()"></a>
+                            </td>
+                        </tr>
+                        <% } %>
+                </table>
+                <script>
+                    function mostrarBorrar() {
+                        var borrar = document.getElementById('borrar');
+                        borrar.classList.remove("d-none");
+                        var tabla = document.getElementById('tabla')
+                        tabla.classList.remove("col-md-12");
+                        tabla.classList.add("col-md-6");
+                        var añadir = document.getElementById('añadir');
+                        añadir.classList.add("d-none");
+                        var editar = document.getElementById('editar');
+                        ocultar.classList.add("d-none");
+                    }
+                </script>
+            </div>
+            <div class="col-md-6 mt-4 card d-none" id="añadir" name="añadir">
+                <form action="/postulantes/add" method="post" class="card-body">
+                    <h3 class="card-title">Añada un postulante</h3>
+                    <h6>Todos los campos deben ser llenados.</h6>
+                    <div class="form-group">
+                        <label for="NumSolicitud">Nro. de Solicitud: </label>
+                        <% max1='' ; for(var i=0; i<postulantes[0].length; i++) { if (postulantes[0][i].NumSolicitud>
+                            max1)
+                            max1 = postulantes[0][i].NumSolicitud;
+                            }
+                            numsol = parseInt(max1, 10) + 1;
+                            %>
+                            <input class="form-control" type="text" name="NumSolicitud" value='<%= numsol.toString() %>'
+                                readonly>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden">
+                        <label for="Codigo">Código de postulante: </label>
+                        <% max='' ; for(var i=0; i<postulantes[0].length; i++) { if (postulantes[0][i].CodP> max)
+                            max = postulantes[0][i].CodP;
+                            }
+                            codigo = parseInt(max, 10) + 1;
+                            %>
+                            <input class="form-control" type="text" name="Codigo" value='<%= codigo.toString() %>'
+                                readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="DNI">DNI: </label>
+                        <input type="text" name="DNI" class="form-control" maxlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="Nombres">Nombres: </label>
+                        <input type="text" name="Nombres" class="form-control" maxlength="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="Apellidos">Apellidos: </label>
+                        <input type="text" name="Apellidos" class="form-control" maxlength="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="Sexo">Sexo: </label>
+                        <select name="Sexo" class="form-control">
+                            <option value="">---Elija una opción---</option>
+                            <option value="m">Masculino</option>
+                            <option value="f">Femenino</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Edad">Edad: </label>
+                        <input type="number" name="Edad" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="Celular">Celular: </label>
+                        <input type="text" name="Celular" class="form-control" maxlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label for="TelFijo">Teléfono Fijo: </label>
+                        <input type="text" name="TelFijo" class="form-control" maxlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label for="Direccion">Direccion: </label>
+                        <input type="text" name="Direccion" class="form-control" maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="EstadoCiv">Estado Civil: </label>
+                        <select name="EstadoCiv" class="form-control">
+                            <option value="">---Elija una opción---</option>
+                            <option value="Soltero">Soltero</option>
+                            <option value="Casado">Casado</option>
+                            <option value="Viudo">Viudo</option>
+                            <option value="Divorciado">Divorciado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="NroHijos">Número de hijos: </label>
+                        <input type="number" name="NroHijos" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="TipoSangre">Tipo de Sangre: </label>
+                        <select name="TipoSangre" class="form-control">
+                            <option value="">---Elija una opción---</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="Descpersonal">Descripción personal: </label>
+                        <input type="text" name="Descpersonal" class="form-control mb-3">
+                    </div>
+                    <h3 class="card-title">Contacto de Emergencia</h3>
+                    <div class="form-group">
+                        <label for="DNICont">DNI: </label>
+                        <input type="text" name="DNICont" class="form-control" maxlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="NombresCont">Nombres: </label>
+                        <input type="text" name="NombresCont" class="form-control" maxlength="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="ApellidosCont">Apellidos: </label>
+                        <input type="text" name="ApellidosCont" class="form-control" maxlength="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="CelularCont">Celular: </label>
+                        <input type="text" name="CelularCont" class="form-control" maxlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label for="DireccionCont">Dirección: </label>
+                        <input type="text" name="DireccionCont" class="form-control" maxlength="45">
+                    </div>
+                    <div class="form-group">
+                        <label for="Vinculo">Vínculo: </label>
+                        <input type="text" name="Vinculo" class="form-control mb-3" maxlength="20">
+                    </div>
+
+                    <h3 class="card-title">Información formativa</h3>
+                    <div class="form-group">
+                        <label for="Nivel">Nivel Educativo: </label>
+                        <select name="Nivel" class="form-control">
+                            <option value="">---Elija una opción---</option>
+                            <option value="1">Técnico</option>
+                            <option value="2">Universitario</option>
+                            <option value="3">Master</option>
+                            <option value="4">Doctorado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Area">Educación superior: </label>
+                        <select name="Area" class="form-control mb-3">
+                            <option value="">---Elija una opción---</option>
+                            <option value="101">Derecho</option>
+                            <option value="102">Adm. Empresarial</option>
+                            <option value="103">Análisis de Sistemas</option>
+                            <option value="104">Comercio Int./Ext.</option>
+                            <option value="105">Diseño Gráfico</option>
+                            <option value="106">Diseño Web</option>
+                            <option value="107">Economía</option>
+                            <option value="108">Enfermería</option>
+                            <option value="109">Farmacia</option>
+                            <option value="110">Finanzas</option>
+                            <option value="111">Ing. Química</option>
+                            <option value="112">Ing. en Sistemas</option>
+                            <option value="113">Marketing</option>
+                            <option value="114">Medicina</option>
+                            <option value="115">Química</option>
+                            <option value="116">Químico Farmacéutica</option>
+                        </select>
+                    </div>
+                    <h3 class="card-title">Experiencia laboral</h3>
+                    <div class="form-group">
+                        <label for="AreaLab">Área Laboral: </label>
+                        <select name="AreaLab" class="form-control">
+                            <option value="">---Elija una opción---</option>
+                            <option value="101">Medicina</option>
+                            <option value="102">Farmacia</option>
+                            <option value="103">Enfermería</option>
+                            <option value="104">Logística</option>
+                            <option value="105">Administración</option>
+                            <option value="106">Contabilidad</option>
+                            <option value="107">Finanzas</option>
+                            <option value="108">Comercio Exterior</option>
+                            <option value="109">Atención al cliente</option>
+                            <option value="110">Ventas</option>
+                            <option value="111">Comunicación</option>
+                            <option value="112">Dpto. Técnico</option>
+                            <option value="113">Investigación</option>
+                            <option value="114">Gerencia</option>
+                            <option value="115">Ingenierías</option>
+                            <option value="116">Legales</option>
+                            <option value="117">Marketing</option>
+                            <option value="118">Recursos Humanos</option>
+                            <option value="119">Sistemas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="FechaIni">Fecha inicio: </label>
+                        <input type="date" name="FechaIni" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="FechaFin">Fecha fin: </label>
+                        <input type="date" name="FechaFin" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="CelRef">Celular de referencia: </label>
+                        <input type="text" name="CelRef" class="form-control" maxlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label for="EmailRef">Email de referencia: </label>
+                        <input type="email" name="EmailRef" class="form-control mb-3" maxlength="45">
+                    </div>
+                    <h3 class="card-title">Resolución</h3>
+                    <div class="form-group">
+                        <label for="Calificacion">Comentarios: </label>
+                        <input type="text" name="Calificacion" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="Apto">Calificación: </label>
+                        <select name="Apto" class="form-control mb-3">
+                            <option value="">---Elija una opción---</option>
+                            <option value="1">Apto</option>
+                            <option value="0">No apto</option>
+                        </select>
+                    </div>
+                    <input type="submit" class="btn btn-primary bi bi-send">
+                    <button class="btn btn-danger"> Cancelar </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/_footer') %>

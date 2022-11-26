@@ -1,0 +1,46 @@
+<%- include('partials/_header') %>
+
+
+    <div class="container-fluid p-4 gap-5">
+        <a href="/solicitudes" class="d-none col-md-1 btn btn-danger bi bi-arrow-return-left" id="volver"> Volver </a>
+        <div class="row p-3 gap-5 w-100 d-flex flex-wrap justify-content-center align-items-center">
+            <a href="/solicitudes/farmacia"
+                class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Postulantes: Farmacia</a>
+            <a href="/solicitudes/farmacia/medicina"
+                class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Experiencia: Farmacia o
+                Medicina</a>
+        </div>
+        <div class="row p-3 gap-5 w-100 d-flex flex-wrap justify-content-center align-items-center">
+            <a href="/solicitudes/titulo/universitario"
+                class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Postulantes con Título
+                Universitario</a>
+            <a href="/solicitudes/experiencia-laboral"
+                class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Experiencia laboral</a>
+        </div>
+        <div class="row p-3 gap-5 w-100 d-flex flex-wrap justify-content-center align-items-center">
+            <a href="/solicitudes/enfermedad-postulante" class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Postulantes:
+                Enfermedad padecida</a>
+            <a href="/solicitudes/contactoemergencia-postulante" class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Contactos de
+                emergencia</a>
+        </div>
+        <div class="row p-3 gap-5 w-100 d-flex flex-wrap justify-content-center align-items-center">
+            <a href="/solicitudes/arealaboral/contactoreferencia" class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Área laboral y
+                contacto de referencia</a>
+            <a href="/solicitudes/postulantes/femeninos" class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Postulantes
+                femeninos</a>
+        </div>
+        <div class="row p-3 gap-5 w-100 d-flex flex-wrap justify-content-center align-items-center">
+            <a href="/solicitudes/postulantes/menores-30" class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Postulantes
+                menores a 30 años</a>
+            <a href="/solicitudes/postulantes/hijos" class="col-md-5 btn btn-primary d-flex justify-content-center align-items-center">Hijos por
+                Postulante</a>
+        </div>
+        <style>
+            .container-fluid a {
+                font-weight: 700;
+                height: 75px;
+                font-size: x-large;
+            }
+        </style>
+    </div>
+    <%- include('partials/_footer') %>

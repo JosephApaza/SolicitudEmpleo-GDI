@@ -1,0 +1,49 @@
+<%- include('partials/_header') %>
+    <div class="container-fluid p-4 gap-5">
+        <a href="/solicitudes" class="col-md-1 btn btn-danger bi bi-arrow-return-left" id="volver"> Volver </a>
+        <div class="row p-3 gap-5 w-100 d-flex flex-wrap justify-content-center align-items-center">
+            <h1 class="col-md-12 mb-0 text-center">Postulantes: Área laboral y contacto de referencia</h1>
+            <div>
+                <label>Buscar: </label>
+                <input type="search" id="buscador">
+                <script>
+                    document.addEventListener("keyup", e => {
+                        if (e.target.matches('#buscador')) {
+                            if (e.key === "Escape") e.target.value = '';
+                            document.querySelectorAll('.registro').forEach(post => {
+                                post.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+                                    ? post.classList.remove("d-none")
+                                    : post.classList.add("d-none");
+                            });
+                        }
+                    });
+                </script>
+            </div>
+            <table class="table table-striped RegPost text-center" id="tbPostFarm">
+                <tr>
+                    <th>POSTULANTE</th>
+                    <th>ÁREA LABORAL</th>
+                    <th>CELULAR-REFERENCIA</th>
+                    <th>EMAIL-REFERENCIA</th>
+                </tr>
+                <% for(var i=0; i < areaContactRef[0].length; i++) { %>
+                    <tr class="registro">
+                        <td>
+                            <%= areaContactRef[0][i].Postulante %>
+                        </td>
+                        <td>
+                            <%= areaContactRef[0][i].Area %>
+                        </td>
+                        <td>
+                            <%= areaContactRef[0][i].CelRef %>
+                        </td>
+                        <td>
+                            <%= areaContactRef[0][i].EmailRef %>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+        </div>
+    </div>
+
+    <%- include('partials/_footer') %>
